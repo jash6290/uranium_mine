@@ -1,10 +1,17 @@
 function fillBox(blockType: number, x1: number, y1: number, z1: number, x2: number, y2: number, z2: number) {
-    blocks.fill(
-        blockType,
-        pos(x1, y1, z1),
-        pos(x2, y2, z2),
-        FillOperation.Replace
-    )
+    let step = 12
+    for (let x = x1; x <= x2; x += step) {
+        for (let y = y1; y <= y2; y += step) {
+            for (let z = z1; z <= z2; z += step) {
+                blocks.fill(
+                    blockType,
+                    pos(x, y, z),
+                    pos(Math.min(x + step - 1, x2), Math.min(y + step - 1, y2), Math.min(z + step - 1, z2)),
+                    FillOperation.Replace
+                )
+            }
+        }
+    }
 }
 
 function buildHollowBox(wallBlock: number, floorBlock: number, x1: number, y1: number, z1: number, x2: number, y2: number, z2: number) {
@@ -48,8 +55,7 @@ function buildSolarRow(startX: number, z: number) {
 function buildScene() {
     player.say("Building uranium mine model: mine, beneficiation plant, heap, factory, tailings lake, and solar farm.")
 
-    fillBox(AIR, -185, 0, -95, 170, 45, 165)
-    fillBox(GRASS, -185, -1, -95, 170, -1, 165)
+    fillBox(GRASS, -175, -1, -70, 115, -1, 160)
 
     buildHollowBox(STONE, COBBLESTONE, -165, -16, -18, -35, -4, 18)
     fillBox(AIR, -36, -13, -8, -29, -5, 8)
